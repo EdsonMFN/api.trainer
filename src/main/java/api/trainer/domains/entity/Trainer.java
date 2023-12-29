@@ -4,6 +4,8 @@ import api.trainer.domains.model.RegistrationData;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Table(name = "trainer")
 @Entity
 @Data
@@ -23,5 +25,7 @@ public class Trainer extends RegistrationData {
     private String Instagram;
     @Column(name = "cref")
     private String cref;
+    @OneToMany(mappedBy = "trainer",cascade = CascadeType.ALL)
+    private List<Client> client;
 
 }

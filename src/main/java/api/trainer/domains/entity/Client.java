@@ -33,4 +33,7 @@ public class Client extends RegistrationData {
     private Address address;
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<Training> trainings;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_trainer")
+    private Trainer trainer;
 }
