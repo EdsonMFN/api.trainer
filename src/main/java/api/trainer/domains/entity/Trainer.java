@@ -1,9 +1,11 @@
 package api.trainer.domains.entity;
 
 import api.trainer.domains.model.RegistrationData;
+import api.trainer.domains.model.TrainerDto;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "trainer")
@@ -28,4 +30,12 @@ public class Trainer extends RegistrationData {
     @OneToMany(mappedBy = "trainer",cascade = CascadeType.ALL)
     private List<Client> client;
 
+    public Trainer(TrainerDto trainerDto) {
+
+        this.id = trainerDto.getId();
+        this.description = trainerDto.getDescription();
+        this.Instagram = trainerDto.getInstagram();
+        this.cref = trainerDto.getCref();
+        this.client = new ArrayList<>();
+    }
 }

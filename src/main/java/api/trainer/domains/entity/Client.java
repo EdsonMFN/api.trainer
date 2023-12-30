@@ -1,5 +1,6 @@
 package api.trainer.domains.entity;
 
+import api.trainer.domains.model.ClientDto;
 import api.trainer.domains.model.RegistrationData;
 import api.trainer.enums.TpGroup;
 import jakarta.persistence.*;
@@ -36,4 +37,17 @@ public class Client extends RegistrationData {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_trainer")
     private Trainer trainer;
+
+    public Client(ClientDto clientDto) {
+        this.id = clientDto.getId();
+        this.status = clientDto.isStatus();
+        this.tpGroup = clientDto.getTpGroup();
+        this.brithday = clientDto.getBrithday();
+        if (clientDto.getAddress()!=null){
+            this.address = new Address(clientDto.getAddress());
+        }
+        if (clientDto.getTrainer()!=null){
+            this.trainer = new Trainer(clientDto.getTrainer());
+        }
+    }
 }

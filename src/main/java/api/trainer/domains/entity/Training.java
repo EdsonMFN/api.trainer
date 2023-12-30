@@ -1,5 +1,6 @@
 package api.trainer.domains.entity;
 
+import api.trainer.domains.model.TrainingDto;
 import api.trainer.enums.TrainingIntensity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "training")
@@ -34,4 +36,12 @@ public class Training {
     @OneToMany(mappedBy = "training", cascade = CascadeType.ALL)
     private List<Exercise> exercises;
 
+    public Training(TrainingDto trainingDto) {
+        this.id = trainingDto.getId();
+        this.feedback = trainingDto.getFeedback();
+        this.trainingIntensity = trainingDto.getTrainingIntensity();
+        this.client = new Client();
+        this.workoutRoutine = new WorkoutRoutine();
+        this.exercises = new ArrayList<>();
+    }
 }

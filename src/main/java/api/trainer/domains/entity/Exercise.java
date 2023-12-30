@@ -1,5 +1,6 @@
 package api.trainer.domains.entity;
 
+import api.trainer.domains.model.ExerciseDto;
 import api.trainer.enums.MuscleGroup;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -39,4 +40,16 @@ public class Exercise {
     @JoinColumn(name = "id_training")
     private Training training;
 
+    public Exercise(ExerciseDto exerciseDto) {
+        this.id = exerciseDto.getId();
+        this.nome = exerciseDto.getNome();
+        this.copy = exerciseDto.isCopy();
+        this.media = exerciseDto.isMedia();
+        this.observation = exerciseDto.getObservation();
+        this.series = exerciseDto.getSeries();
+        this.repetitions = exerciseDto.getRepetitions();
+        this.timeInterval = exerciseDto.getTimeInterval();
+        this.muscleGroup = exerciseDto.getMuscleGroup();
+        this.training = new Training();
+    }
 }

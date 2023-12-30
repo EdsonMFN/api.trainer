@@ -1,5 +1,6 @@
 package api.trainer.domains.entity;
 
+import api.trainer.domains.model.WorkoutRoutineDto;
 import api.trainer.enums.Difficulty;
 import api.trainer.enums.Goal;
 import api.trainer.enums.TypeOfTraining;
@@ -43,4 +44,17 @@ public class WorkoutRoutine {
     @Column(name = "type_of_training")
     @Enumerated(EnumType.STRING)
     private TypeOfTraining group;
+
+    public WorkoutRoutine(WorkoutRoutineDto workoutRoutineDto) {
+        this.id = workoutRoutineDto.getId();
+        this.observation = workoutRoutineDto.getObservation();
+        this.startDate = workoutRoutineDto.getStartDate();
+        this.finalDate = workoutRoutineDto.getFinalDate();
+        this.filePDF = workoutRoutineDto.isFilePDF();
+        this.timeTraining = workoutRoutineDto.isTimeTraining();
+        this.periodization = workoutRoutineDto.isPeriodization();
+        this.goal = workoutRoutineDto.getGoal();
+        this.difficulty = workoutRoutineDto.getDifficulty();
+        this.group = workoutRoutineDto.getGroup();
+    }
 }

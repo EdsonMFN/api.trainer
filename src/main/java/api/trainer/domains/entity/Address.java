@@ -1,6 +1,7 @@
 package api.trainer.domains.entity;
 
 
+import api.trainer.domains.model.AddressDto;
 import api.trainer.enums.State;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,4 +34,14 @@ public class Address {
     private String complement;
     @Column(name = "cep")
     private String cep;
+
+    public Address(AddressDto addressDto) {
+        this.id = addressDto.getId();
+        this.address = addressDto.getAddress();
+        this.number = addressDto.getNumber();
+        this.state = addressDto.getState();
+        this.district = addressDto.getDistrict();
+        this.complement = addressDto.getComplement();
+        this.cep = addressDto.getCep();
+    }
 }

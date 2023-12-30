@@ -12,13 +12,11 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ClientResponse {
 
-    private ClientDto clientDto;
+    private ClientDto client;
 
     private String msg;
 
     public ClientResponse(String msg) {
         this.msg = msg;
     }
-
-
 }
