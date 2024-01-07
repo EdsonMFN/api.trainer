@@ -1,14 +1,13 @@
 package api.trainer.domains.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.MappedSuperclass;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@MappedSuperclass
 public class RegistrationDataDto {
 
     private String name;

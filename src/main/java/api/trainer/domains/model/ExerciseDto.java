@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class ExerciseDto {
+
     private Long id;
     private String nome;
     private boolean copy;

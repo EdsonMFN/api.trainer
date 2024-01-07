@@ -1,10 +1,7 @@
 package api.trainer.rest.response;
 
 import api.trainer.domains.model.ClientDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
@@ -18,5 +15,9 @@ public class ClientResponse {
 
     public ClientResponse(String msg) {
         this.msg = msg;
+    }
+
+    public ClientResponse(ClientDto client) {
+        this.client = client;
     }
 }

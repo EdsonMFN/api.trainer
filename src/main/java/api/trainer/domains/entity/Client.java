@@ -1,7 +1,6 @@
 package api.trainer.domains.entity;
 
 import api.trainer.domains.model.ClientDto;
-import api.trainer.domains.model.RegistrationData;
 import api.trainer.enums.TpGroup;
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,4 +1,4 @@
-package api.trainer.domains.model;
+package api.trainer.domains.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class HandlerEntityNotFoundException extends RuntimeException{
-    public HandlerEntityNotFoundException(String msg, Long id) {
+    public HandlerEntityNotFoundException(String msg) {
         super(msg);
     }
 }
