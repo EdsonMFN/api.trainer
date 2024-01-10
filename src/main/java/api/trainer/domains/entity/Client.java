@@ -4,6 +4,7 @@ import api.trainer.domains.model.ClientDto;
 import api.trainer.enums.TpGroup;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 public class Client extends RegistrationData {
 
@@ -38,8 +39,14 @@ public class Client extends RegistrationData {
     private Trainer trainer;
 
     public Client(ClientDto clientDto) {
+        super(
+                clientDto.getName(),
+                clientDto.getEmail(),
+                clientDto.getPhone(),
+                clientDto.getGender()
+        );
         this.id = clientDto.getId();
-        this.status = clientDto.isStatus();
+        this.status = true;
         this.tpGroup = clientDto.getTpGroup();
         this.brithday = clientDto.getBrithday();
         if (clientDto.getAddress()!=null){

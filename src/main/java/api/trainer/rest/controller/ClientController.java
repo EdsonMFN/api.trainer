@@ -16,9 +16,9 @@ public class ClientController {
     @Autowired
     private ClientServiceImp service;
 
-    @PostMapping("/address{idAddress}/trainer{idTrainer}")
-    public ResponseEntity<ClientResponse> createClient(@RequestBody ClientDto request, @PathVariable Long idAddress, @PathVariable Long idTrainer){
-        ClientResponse response = service.createClient(request,idAddress,idTrainer);
+    @PostMapping("/trainer/{idTrainer}")
+    public ResponseEntity<ClientResponse> createClient(@RequestBody ClientDto request, @PathVariable Long idTrainer){
+        ClientResponse response = service.createClient(request,idTrainer);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
     @GetMapping

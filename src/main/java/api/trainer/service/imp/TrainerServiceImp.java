@@ -1,8 +1,8 @@
 package api.trainer.service.imp;
 
+import api.trainer.domains.entity.Trainer;
 import api.trainer.domains.model.TrainerDto;
 import api.trainer.domains.repository.TrainerRepository;
-import api.trainer.rest.response.ExerciseResponse;
 import api.trainer.rest.response.TrainerResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,19 +12,21 @@ public class TrainerServiceImp {
     @Autowired
     private TrainerRepository trainerRepository;
 
-    public TrainerResponse createExercise(TrainerDto request){
+    public TrainerResponse createTrainer(TrainerDto request){
+        Trainer trainer = new Trainer(request);
+        trainerRepository.save(trainer);
+        return new TrainerResponse("Created trainer successfully");
+    }
+    public TrainerResponse findAllTrainer(){
         return null;
     }
-    public TrainerResponse findAllExercise(){
+    public TrainerResponse findByIdTrainer(Long idTrainer){
         return null;
     }
-    public TrainerResponse findByIdExercise(Long idTrainer){
+    public TrainerResponse updateTrainer(Long idTrainer){
         return null;
     }
-    public TrainerResponse updateExercise(Long idTrainer){
-        return null;
-    }
-    public TrainerResponse deleteExercise(Long idTrainer){
+    public TrainerResponse deleteTrainer(Long idTrainer){
         return null;
     }
 }

@@ -33,10 +33,6 @@ public class ExerciseServiceImp {
                     .id(exercise.getId())
                     .nome(exercise.getNome())
                     .muscleGroup(exercise.getMuscleGroup())
-                    .observation(exercise.getObservation())
-                    .timeInterval(exercise.getTimeInterval())
-                    .series(exercise.getSeries())
-                    .repetitions(exercise.getRepetitions())
                     .build());
             responses.add(response);
         });
@@ -50,10 +46,6 @@ public class ExerciseServiceImp {
                 .id(exercise.getId())
                 .nome(exercise.getNome())
                 .muscleGroup(exercise.getMuscleGroup())
-                .observation(exercise.getObservation())
-                .timeInterval(exercise.getTimeInterval())
-                .series(exercise.getSeries())
-                .repetitions(exercise.getRepetitions())
                 .build());
     }
     public ExerciseResponse updateExercise(ExerciseDto request,Long idExercise){

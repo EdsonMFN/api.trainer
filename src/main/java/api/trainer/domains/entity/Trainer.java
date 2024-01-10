@@ -3,6 +3,7 @@ package api.trainer.domains.entity;
 import api.trainer.domains.model.TrainerDto;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 public class Trainer extends RegistrationData {
 
@@ -30,7 +31,7 @@ public class Trainer extends RegistrationData {
     private List<Client> client;
 
     public Trainer(TrainerDto trainerDto) {
-
+        super(trainerDto.getName(),trainerDto.getEmail(),trainerDto.getPhone(),trainerDto.getGender());
         this.id = trainerDto.getId();
         this.description = trainerDto.getDescription();
         this.Instagram = trainerDto.getInstagram();

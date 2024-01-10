@@ -2,6 +2,7 @@ package api.trainer.domains.model;
 
 import api.trainer.enums.TpGroup;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Builder
+@SuperBuilder
 public class ClientDto extends RegistrationDataDto{
 
     private Long id;

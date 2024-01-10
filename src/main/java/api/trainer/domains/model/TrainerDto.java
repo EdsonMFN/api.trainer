@@ -2,13 +2,15 @@ package api.trainer.domains.model;
 
 import jakarta.persistence.MappedSuperclass;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
-@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
 public class TrainerDto extends RegistrationDataDto{
 
     private Long id;

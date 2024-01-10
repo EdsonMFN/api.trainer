@@ -25,9 +25,9 @@ public class ClientServiceImp{
     @Autowired
     private TrainerRepository trainerRepository;
 
-    public ClientResponse createClient(ClientDto request,Long idAddress,Long idTrainer) {
+    public ClientResponse createClient(ClientDto request,Long idTrainer) {
 
-        clientRepository.save(builderClient(request,idAddress,idTrainer));
+        clientRepository.save(builderClient(request,idTrainer));
 
         return new ClientResponse(request, "Client, created successfully");
     }
@@ -38,6 +38,10 @@ public class ClientServiceImp{
             clients.parallelStream().forEach(client -> {
                 ClientResponse response = new ClientResponse(ClientDto.builder()
                         .id(client.getId())
+                        .name(client.getName())
+                        .email(client.getEmail())
+                        .phone(client.getPhone())
+                        .gender(client.getGender())
                         .status(client.isStatus())
                         .tpGroup(client.getTpGroup())
                         .brithday(client.getBrithday())
@@ -54,6 +58,7 @@ public class ClientServiceImp{
         Client client = clientRepository.findById(idClient)
                 .orElseThrow(() -> new HandlerEntityNotFoundException("Address not found with id:" + idClient));
         try {
+
             return new ClientResponse(ClientDto.builder()
                     .id(client.getId())
                     .status(client.isStatus())
@@ -86,19 +91,36 @@ public class ClientServiceImp{
         Client client = clientRepository.findById(idClient)
                 .orElseThrow(() -> new HandlerEntityNotFoundException("Address not found with id:" + idClient));
         try {
-            clientRepository.delete(client);
-            return new ClientResponse("Client, deleted with successfully");
+            if (client.isStatus()){
+                client.setStatus(false);
+                clientRepository.save(client);
+            }
+            else {
+                client.setStatus(true);
+                clientRepository.save(client);
+            }
+            return new ClientResponse("Client successfully deactivated");
         } catch (Exception ex){
             throw new HandlerError(ex.getMessage());
         }
     }
-    public Client builderClient(ClientDto request,Long idAddress,Long idTrainer) {
-        Address address = addressRepository.findById(idAddress)
-                .orElseThrow(() -> new HandlerEntityNotFoundException("Address not found with id:"+idAddress));
+    public Client builderClient(ClientDto request,Long idTrainer) {
+
         Trainer trainer = trainerRepository.findById(idTrainer)
                 .orElseThrow(() -> new HandlerEntityNotFoundException("Trainer not found with id:"+ idTrainer));
+            var addressRequest = request.getAddress();
         try {
+            Address address = new Address();
+            address.setAddress(addressRequest.getAddress());
+            address.setCep(addressRequest.getCep());
+            address.setNumber(addressRequest.getNumber());
+            address.setDistrict(addressRequest.getDistrict());
+            address.setState(addressRequest.getState());
+            address.setComplement(addressRequest.getComplement());
+            addressRepository.save(address);
+
             Client client = new Client(request);
+            client.setPhone(costumerPhone(request.getPhone()));
             client.setAddress(address);
             client.setTrainer(trainer);
 

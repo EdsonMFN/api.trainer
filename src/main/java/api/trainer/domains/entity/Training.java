@@ -27,13 +27,26 @@ public class Training {
     @Column(name = "training_intensity")
     @Enumerated(EnumType.STRING)
     private TrainingIntensity trainingIntensity;
+    @Column(name = "observation")
+    private String observation;
+    @Column(name = "series")
+    private Integer series;
+    @Column(name = "repetitions")
+    private Integer repetitions;
+    @Column(name = "time_interval")
+    private int timeInterval;
+    @Column(name = "copy")
+    private boolean copy;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_client")
     private Client client;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_workoutRoutine")
     private WorkoutRoutine workoutRoutine;
-    @OneToMany(mappedBy = "training", cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "exercise-training",
+                joinColumns = @JoinColumn(name = "id_exercise"),
+                inverseJoinColumns = @JoinColumn(name = "id_training"))
     private List<Exercise> exercises;
 
     public Training(TrainingDto trainingDto) {
