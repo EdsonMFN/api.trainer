@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,10 +20,11 @@ public class WorkoutRoutineDto {
     private String observation;
     private LocalDate startDate;
     private LocalDate finalDate;
-    private boolean filePDF;
+    private boolean filePDF = true;
     private boolean timeTraining;
     private boolean periodization;
     private Goal goal;
     private Difficulty difficulty;
     private TypeOfTraining group;
+    private List<TrainingDto> trainings;
 }

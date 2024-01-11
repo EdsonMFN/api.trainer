@@ -16,11 +16,8 @@ public class TrainingDto {
     private String feedback;
     private TrainingIntensity trainingIntensity;
     private boolean copy;
-    private String observation;
-    private Integer series;
-    private Integer repetitions;
-    private int timeInterval;
     private ClientDto client;
     private WorkoutRoutineDto workoutRoutine;
-    private List<ExerciseDto> exercises;
+    private List<TrainingExercisesDto> trainingExercises;
+
 }

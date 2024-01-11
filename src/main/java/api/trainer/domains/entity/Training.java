@@ -27,14 +27,6 @@ public class Training {
     @Column(name = "training_intensity")
     @Enumerated(EnumType.STRING)
     private TrainingIntensity trainingIntensity;
-    @Column(name = "observation")
-    private String observation;
-    @Column(name = "series")
-    private Integer series;
-    @Column(name = "repetitions")
-    private Integer repetitions;
-    @Column(name = "time_interval")
-    private int timeInterval;
     @Column(name = "copy")
     private boolean copy;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -43,18 +35,17 @@ public class Training {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_workoutRoutine")
     private WorkoutRoutine workoutRoutine;
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "exercise-training",
-                joinColumns = @JoinColumn(name = "id_exercise"),
-                inverseJoinColumns = @JoinColumn(name = "id_training"))
-    private List<Exercise> exercises;
+    @OneToMany(mappedBy = "training")
+    private List<TrainingExercises> trainingExercises;
 
     public Training(TrainingDto trainingDto) {
         this.id = trainingDto.getId();
         this.feedback = trainingDto.getFeedback();
         this.trainingIntensity = trainingDto.getTrainingIntensity();
+        this.copy = false;
         this.client = new Client();
-        this.workoutRoutine = new WorkoutRoutine();
-        this.exercises = new ArrayList<>();
+//        this.workoutRoutine = new WorkoutRoutine();
+        this.trainingExercises = new ArrayList<>();
     }
 }
+//todo : colocar o treinador na classe;

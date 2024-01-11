@@ -11,6 +11,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "workout_routine")
 @Entity
@@ -44,6 +46,8 @@ public class WorkoutRoutine {
     @Column(name = "type_of_training")
     @Enumerated(EnumType.STRING)
     private TypeOfTraining group;
+    @OneToMany(mappedBy = "workoutRoutine")
+    private List<Training> trainings;
 
     public WorkoutRoutine(WorkoutRoutineDto workoutRoutineDto) {
         this.id = workoutRoutineDto.getId();
@@ -56,5 +60,6 @@ public class WorkoutRoutine {
         this.goal = workoutRoutineDto.getGoal();
         this.difficulty = workoutRoutineDto.getDifficulty();
         this.group = workoutRoutineDto.getGroup();
+        this.trainings = new ArrayList<>();
     }
 }

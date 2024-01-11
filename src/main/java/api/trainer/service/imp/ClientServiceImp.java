@@ -72,7 +72,7 @@ public class ClientServiceImp{
     public ClientResponse updateClient(ClientDto request, Long idClient, Long idAddress, Long idTrainer) {
         try {
             Client client = clientRepository.findById(idClient)
-                    .orElseThrow(() -> new HandlerEntityNotFoundException("Address not found with id:" + idClient));
+                    .orElseThrow(() -> new HandlerEntityNotFoundException("Client not found with id:" + idClient));
             Address address = addressRepository.findById(idAddress)
                     .orElseThrow(() -> new HandlerEntityNotFoundException("Address not found with id:"+idAddress));
             Trainer trainer = trainerRepository.findById(idTrainer)
@@ -89,17 +89,19 @@ public class ClientServiceImp{
     }
     public ClientResponse deleteClient(Long idClient) {
         Client client = clientRepository.findById(idClient)
-                .orElseThrow(() -> new HandlerEntityNotFoundException("Address not found with id:" + idClient));
+                .orElseThrow(() -> new HandlerEntityNotFoundException("Client not found with id:" + idClient));
         try {
             if (client.isStatus()){
                 client.setStatus(false);
                 clientRepository.save(client);
+               return new ClientResponse("Client successfully deactivated");
             }
             else {
                 client.setStatus(true);
                 clientRepository.save(client);
+               return new ClientResponse("Client successfully active");
             }
-            return new ClientResponse("Client successfully deactivated");
+
         } catch (Exception ex){
             throw new HandlerError(ex.getMessage());
         }
@@ -121,6 +123,7 @@ public class ClientServiceImp{
 
             Client client = new Client(request);
             client.setPhone(costumerPhone(request.getPhone()));
+            client.setStatus(true);
             client.setAddress(address);
             client.setTrainer(trainer);
 

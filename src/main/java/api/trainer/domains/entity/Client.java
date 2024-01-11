@@ -46,7 +46,7 @@ public class Client extends RegistrationData {
                 clientDto.getGender()
         );
         this.id = clientDto.getId();
-        this.status = true;
+        this.status = clientDto.isStatus();
         this.tpGroup = clientDto.getTpGroup();
         this.brithday = clientDto.getBrithday();
         if (clientDto.getAddress()!=null){
