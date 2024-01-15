@@ -29,42 +29,81 @@ public class ClientServiceImp{
 
         clientRepository.save(builderClient(request,idTrainer));
 
-        return new ClientResponse(request, "Client, created successfully");
+        return new ClientResponse("Client, created successfully");
     }
-    public List<ClientResponse> findAllClient() {
-        List<Client> clients = clientRepository.findAll();
-        List<ClientResponse> responses = new ArrayList<>();
-        try {
-            clients.parallelStream().forEach(client -> {
-                ClientResponse response = new ClientResponse(ClientDto.builder()
-                        .id(client.getId())
-                        .name(client.getName())
-                        .email(client.getEmail())
-                        .phone(client.getPhone())
-                        .gender(client.getGender())
-                        .status(client.isStatus())
-                        .tpGroup(client.getTpGroup())
-                        .brithday(client.getBrithday())
-                        .build());
-
-                responses.add(response);
-            });
-            return responses;
-        } catch (Exception ex){
-            throw new HandlerError(ex.getMessage());
-        }
-    }
+//    public List<ClientResponse> findAllClient() {
+//        List<Client> clients = clientRepository.findAll();
+//        List<ClientResponse> responses = new ArrayList<>();
+//        try {
+//            clients.forEach(client -> {
+//                responses.add(new ClientResponse(new ClientDto(client)));
+//            });
+//            return responses;
+//        } catch (Exception ex){
+//            throw new HandlerError(ex.getMessage());
+//        }
+//    }
     public ClientResponse findByIdClient(Long idClient) {
         Client client = clientRepository.findById(idClient)
                 .orElseThrow(() -> new HandlerEntityNotFoundException("Address not found with id:" + idClient));
         try {
-
             return new ClientResponse(ClientDto.builder()
                     .id(client.getId())
-                    .status(client.isStatus())
+                    .active(client.isActive())
                     .tpGroup(client.getTpGroup())
                     .brithday(client.getBrithday())
                     .build());
+        } catch (Exception ex){
+            throw new HandlerError(ex.getMessage());
+        }
+    }
+    public List<ClientResponse> findAllByActive(boolean activeOrDeactivate){
+        List<Client> clients = clientRepository.findAll();
+        List<ClientResponse> responses = new ArrayList<>();
+
+        try {
+            clients.forEach(client -> {
+                if (client.isActive() == activeOrDeactivate){
+                    ClientResponse response = new ClientResponse(ClientDto.builder()
+                            .id(client.getId())
+                            .name(client.getName())
+                            .email(client.getEmail())
+                            .phone(client.getPhone())
+                            .gender(client.getGender())
+                            .active(client.isActive())
+                            .tpGroup(client.getTpGroup())
+                            .brithday(client.getBrithday())
+                            .build());
+
+                    responses.add(response);
+                }
+            });
+            return responses;
+        } catch (Exception ex){
+        throw new HandlerError(ex.getMessage());
+    }
+    }
+    public List<ClientResponse> findAllByChar(char charClient){
+        List<Client> clients = clientRepository.findAll();
+        List<ClientResponse> responses = new ArrayList<>();
+        try {
+            clients.stream()
+                    .filter(client -> client.getName().charAt(0) == charClient)
+                    .forEach(client -> {
+                    ClientResponse response = new ClientResponse(ClientDto.builder()
+                            .id(client.getId())
+                            .name(client.getName())
+                            .email(client.getEmail())
+                            .phone(client.getPhone())
+                            .gender(client.getGender())
+                            .active(client.isActive())
+                            .tpGroup(client.getTpGroup())
+                            .brithday(client.getBrithday())
+                            .build());
+
+                    responses.add(response);
+            });
+            return responses;
         } catch (Exception ex){
             throw new HandlerError(ex.getMessage());
         }
@@ -91,13 +130,13 @@ public class ClientServiceImp{
         Client client = clientRepository.findById(idClient)
                 .orElseThrow(() -> new HandlerEntityNotFoundException("Client not found with id:" + idClient));
         try {
-            if (client.isStatus()){
-                client.setStatus(false);
+            if (client.isActive()){
+                client.setActive(false);
                 clientRepository.save(client);
                return new ClientResponse("Client successfully deactivated");
             }
             else {
-                client.setStatus(true);
+                client.setActive(true);
                 clientRepository.save(client);
                return new ClientResponse("Client successfully active");
             }
@@ -123,7 +162,6 @@ public class ClientServiceImp{
 
             Client client = new Client(request);
             client.setPhone(costumerPhone(request.getPhone()));
-            client.setStatus(true);
             client.setAddress(address);
             client.setTrainer(trainer);
 
@@ -132,9 +170,9 @@ public class ClientServiceImp{
             throw new HandlerError(ex.getMessage());
         }
     }
-    private String costumerPhone(String numberPhone){
+    private static String costumerPhone(String numberPhone){
         if (numberPhone.length() == 11 && numberPhone.matches("\\d+")){
-            return String.format("(%s) %s",
+            return String.format("(%s)%s",
                     numberPhone.substring(0,2),
                     numberPhone.substring(3,11)
             );

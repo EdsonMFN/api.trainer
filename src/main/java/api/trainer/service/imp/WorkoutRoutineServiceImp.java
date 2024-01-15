@@ -23,7 +23,6 @@ public class WorkoutRoutineServiceImp {
 
     public WorkoutRoutineResponse createExercise(WorkoutRoutineDto request){
         WorkoutRoutine workoutRoutine = new WorkoutRoutine(request);
-        workoutRoutine.setFilePDF(request.isFilePDF());
         workoutRoutine.setPeriodization(request.isPeriodization());
         workoutRoutine.setTimeTraining(request.isTimeTraining());
         workoutRoutineRepository.save(workoutRoutine);
@@ -41,6 +40,5 @@ public class WorkoutRoutineServiceImp {
     public WorkoutRoutineResponse deleteExercise(Long idWorkoutRoutine){
         return null;
     }
-
 
 }

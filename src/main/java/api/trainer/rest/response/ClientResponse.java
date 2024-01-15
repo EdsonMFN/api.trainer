@@ -1,7 +1,10 @@
 package api.trainer.rest.response;
 
 import api.trainer.domains.model.ClientDto;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor

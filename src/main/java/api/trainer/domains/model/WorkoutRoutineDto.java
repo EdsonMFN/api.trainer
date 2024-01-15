@@ -20,7 +20,6 @@ public class WorkoutRoutineDto {
     private String observation;
     private LocalDate startDate;
     private LocalDate finalDate;
-    private boolean filePDF = true;
     private boolean timeTraining;
     private boolean periodization;
     private Goal goal;

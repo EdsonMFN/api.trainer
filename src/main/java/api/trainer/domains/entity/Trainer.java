@@ -31,7 +31,13 @@ public class Trainer extends RegistrationData {
     private List<Client> client;
 
     public Trainer(TrainerDto trainerDto) {
-        super(trainerDto.getName(),trainerDto.getEmail(),trainerDto.getPhone(),trainerDto.getGender());
+        super(
+                trainerDto.getName(),
+                trainerDto.getCpf(),
+                trainerDto.getEmail(),
+                trainerDto.getPhone(),
+                trainerDto.getGender()
+        );
         this.id = trainerDto.getId();
         this.description = trainerDto.getDescription();
         this.Instagram = trainerDto.getInstagram();

@@ -42,9 +42,9 @@ public class Training {
         this.id = trainingDto.getId();
         this.feedback = trainingDto.getFeedback();
         this.trainingIntensity = trainingDto.getTrainingIntensity();
-        this.copy = false;
+        this.copy = trainingDto.isCopy();
         this.client = new Client();
-//        this.workoutRoutine = new WorkoutRoutine();
+        this.workoutRoutine = new WorkoutRoutine();
         this.trainingExercises = new ArrayList<>();
     }
 }

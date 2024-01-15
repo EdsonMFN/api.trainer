@@ -1,16 +1,12 @@
 package api.trainer.service.imp;
 
-import api.trainer.domains.entity.Client;
-import api.trainer.domains.entity.Exercise;
-import api.trainer.domains.entity.Training;
-import api.trainer.domains.entity.TrainingExercises;
+import api.trainer.domains.entity.*;
 import api.trainer.domains.model.TrainingDto;
-import api.trainer.domains.repository.ClientRepository;
-import api.trainer.domains.repository.ExerciseRepository;
-import api.trainer.domains.repository.TrainingExerciseRepository;
-import api.trainer.domains.repository.TrainingRepository;
+import api.trainer.domains.repository.*;
 import api.trainer.exception.handles.HandlerEntityNotFoundException;
 import api.trainer.exception.handles.HandlerError;
+import api.trainer.file.FilePDF;
+import api.trainer.file.FileXlsx;
 import api.trainer.rest.response.TrainingResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,14 +21,23 @@ public class TrainingServiceImp {
     private ExerciseRepository exerciseRepository;
     @Autowired
     private ClientRepository clientRepository;
+    @Autowired
+    private WorkoutRoutineRepository workoutRoutineRepository;
+    @Autowired
+    private FilePDF filePDF;
+    @Autowired
+    private FileXlsx fileXlsx;
 
-    public TrainingResponse createExercise(TrainingDto request, Long idClient){
+    public TrainingResponse createExercise(TrainingDto request, Long idClient,Long idWorkoutRoutine){
         Client client = clientRepository.findById(idClient)
                 .orElseThrow(()->new HandlerEntityNotFoundException("Client not found with id:" + idClient));
+        WorkoutRoutine workoutRoutine = workoutRoutineRepository.findById(idWorkoutRoutine)
+                .orElseThrow(()->new HandlerEntityNotFoundException("Workout Routine not found with id:" + idWorkoutRoutine));
 
         Training training = new Training(request);
-        training.setCopy(copyTraining(request));
         training.setClient(client);
+        training.setWorkoutRoutine(workoutRoutine);
+
         training = trainingRepository.save(training);
 
         Training finalTraining = training;
@@ -62,8 +67,27 @@ public class TrainingServiceImp {
         return null;
     }
 
-    public boolean copyTraining (TrainingDto request){
-
+    public TrainingResponse createPDF(Long idTraining){
+        Training training = trainingRepository.findById(idTraining)
+                .orElseThrow(() -> new HandlerEntityNotFoundException("Training not found with id:" + idTraining));
+        try {
+            filePDF.createFile("treino_academia.pdf", training);
+        } catch (Exception e) {
+            throw new HandlerError("Erro ao criar o PDF: Arquivo não encontrado");
+        }
+        return new TrainingResponse("create file format PDF successfull");
+    }
+    public TrainingResponse createXlsx(Long idTraining){
+        Training training = trainingRepository.findById(idTraining)
+                .orElseThrow(() -> new HandlerEntityNotFoundException("Training not found with id:" + idTraining));
+        try {
+            fileXlsx.createFile("treino_academia.xlsx", training);
+        } catch (Exception e) {
+            throw new HandlerError("Erro ao criar o Xlsx: Arquivo não encontrado");
+        }
+        return new TrainingResponse("create file format PDF successfull");
+    }
+    private boolean copyTraining (TrainingDto request){
         try {
             if (request.isCopy()){
                 Training training = trainingRepository.findById(request.getId())

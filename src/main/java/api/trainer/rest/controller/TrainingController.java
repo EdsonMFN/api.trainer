@@ -15,9 +15,10 @@ public class TrainingController {
     @Autowired
     private TrainingServiceImp service;
 
-    @PostMapping(value = "/client/{idClient}")
-    public ResponseEntity<TrainingResponse> createdTraining(@RequestBody TrainingDto request,@PathVariable Long idClient){
-        TrainingResponse response = service.createExercise(request,idClient);
+    @PostMapping(value = "/client/{idClient}/workoutRoutine/{idWorkoutRoutine}")
+    public ResponseEntity<TrainingResponse> createdTraining(@RequestBody TrainingDto request,@PathVariable Long idClient,@PathVariable Long idWorkoutRoutine){
+        TrainingResponse response = service.createExercise(request,idClient,idWorkoutRoutine);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
 }

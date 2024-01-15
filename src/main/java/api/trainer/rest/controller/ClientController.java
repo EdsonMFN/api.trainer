@@ -21,9 +21,19 @@ public class ClientController {
         ClientResponse response = service.createClient(request,idTrainer);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-    @GetMapping
-    public ResponseEntity<List<ClientResponse>> findAllClient(){
-        List<ClientResponse> responses = service.findAllClient();
+//    @GetMapping
+//    public ResponseEntity<List<ClientResponse>> findAllClient(){
+//        List<ClientResponse> responses = service.findAllClient();
+//        return ResponseEntity.status(HttpStatus.OK).body(responses);
+//    }
+    @GetMapping("/active/{activeOrDeactivate}")
+    public ResponseEntity<List<ClientResponse>> findAllByNameClient(@PathVariable boolean activeOrDeactivate){
+        List<ClientResponse> responses = service.findAllByActive(activeOrDeactivate);
+        return ResponseEntity.status(HttpStatus.OK).body(responses);
+    }
+    @GetMapping("/tpChar/{charClient}")
+    public ResponseEntity<List<ClientResponse>> findAllByNameClient(@PathVariable char charClient){
+        List<ClientResponse> responses = service.findAllByChar(charClient);
         return ResponseEntity.status(HttpStatus.OK).body(responses);
     }
     @GetMapping("/{idClient}")

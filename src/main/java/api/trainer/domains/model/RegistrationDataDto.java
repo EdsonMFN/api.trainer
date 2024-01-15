@@ -12,6 +12,7 @@ import lombok.experimental.SuperBuilder;
 public class RegistrationDataDto {
 
     private String name;
+    private String cpf;
     private String email;
     private String phone;
     private String gender;

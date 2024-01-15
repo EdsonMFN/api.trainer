@@ -54,7 +54,6 @@ public class WorkoutRoutine {
         this.observation = workoutRoutineDto.getObservation();
         this.startDate = workoutRoutineDto.getStartDate();
         this.finalDate = workoutRoutineDto.getFinalDate();
-        this.filePDF = workoutRoutineDto.isFilePDF();
         this.timeTraining = workoutRoutineDto.isTimeTraining();
         this.periodization = workoutRoutineDto.isPeriodization();
         this.goal = workoutRoutineDto.getGoal();

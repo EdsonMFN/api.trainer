@@ -23,7 +23,7 @@ public class Client extends RegistrationData {
     @Column(name = "id_client")
     private Long id;
     @Column(name = "status")
-    private boolean status;
+    private boolean active;
     @Column(name = "tpGroup")
     @Enumerated(EnumType.STRING)
     private TpGroup tpGroup;
@@ -41,12 +41,13 @@ public class Client extends RegistrationData {
     public Client(ClientDto clientDto) {
         super(
                 clientDto.getName(),
+                clientDto.getCpf(),
                 clientDto.getEmail(),
                 clientDto.getPhone(),
                 clientDto.getGender()
         );
         this.id = clientDto.getId();
-        this.status = clientDto.isStatus();
+        this.active = clientDto.isActive();
         this.tpGroup = clientDto.getTpGroup();
         this.brithday = clientDto.getBrithday();
         if (clientDto.getAddress()!=null){
