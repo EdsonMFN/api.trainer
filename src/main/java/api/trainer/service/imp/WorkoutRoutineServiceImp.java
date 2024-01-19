@@ -23,8 +23,8 @@ public class WorkoutRoutineServiceImp {
 
     public WorkoutRoutineResponse createExercise(WorkoutRoutineDto request){
         WorkoutRoutine workoutRoutine = new WorkoutRoutine(request);
-        workoutRoutine.setPeriodization(request.isPeriodization());
-        workoutRoutine.setTimeTraining(request.isTimeTraining());
+        workoutRoutine.setPeriodization(request.getPeriodization());
+        workoutRoutine.setTimeTraining(request.getTimeTraining());
         workoutRoutineRepository.save(workoutRoutine);
         return new WorkoutRoutineResponse("Created workout routine success");
     }

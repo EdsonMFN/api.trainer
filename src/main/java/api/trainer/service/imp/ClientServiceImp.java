@@ -9,6 +9,7 @@ import api.trainer.domains.repository.ClientRepository;
 import api.trainer.domains.repository.TrainerRepository;
 import api.trainer.exception.handles.HandlerEntityNotFoundException;
 import api.trainer.exception.handles.HandlerError;
+import api.trainer.rest.request.TypesToSearch;
 import api.trainer.rest.response.ClientResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,82 +32,51 @@ public class ClientServiceImp{
 
         return new ClientResponse("Client, created successfully");
     }
-//    public List<ClientResponse> findAllClient() {
-//        List<Client> clients = clientRepository.findAll();
-//        List<ClientResponse> responses = new ArrayList<>();
-//        try {
-//            clients.forEach(client -> {
-//                responses.add(new ClientResponse(new ClientDto(client)));
-//            });
-//            return responses;
-//        } catch (Exception ex){
-//            throw new HandlerError(ex.getMessage());
-//        }
-//    }
-    public ClientResponse findByIdClient(Long idClient) {
-        Client client = clientRepository.findById(idClient)
-                .orElseThrow(() -> new HandlerEntityNotFoundException("Address not found with id:" + idClient));
+    public List<ClientResponse> findAllClient() {
+        List<Client> clients = clientRepository.findAll();
+        List<ClientResponse> responses = new ArrayList<>();
         try {
-            return new ClientResponse(ClientDto.builder()
-                    .id(client.getId())
-                    .active(client.isActive())
-                    .tpGroup(client.getTpGroup())
-                    .brithday(client.getBrithday())
-                    .build());
+            clients.forEach(client -> {
+                responses.add(new ClientResponse( ClientDto.builder()
+                        .id(client.getId())
+                        .phone(client.getPhone())
+                        .email(client.getEmail())
+                        .name(client.getName())
+                        .gender(client.getGender())
+                        .brithday(client.getBrithday())
+                        .tpGroup(client.getTpGroup())
+                        .active(client.getActive())
+                        .cpf(client.getCpf())
+                        .build()));
+            });
+            return responses;
         } catch (Exception ex){
             throw new HandlerError(ex.getMessage());
         }
     }
-    public List<ClientResponse> findAllByActive(boolean activeOrDeactivate){
+    public List<ClientResponse> findByFilter(TypesToSearch filter){
         List<Client> clients = clientRepository.findAll();
         List<ClientResponse> responses = new ArrayList<>();
-
-        try {
-            clients.forEach(client -> {
-                if (client.isActive() == activeOrDeactivate){
-                    ClientResponse response = new ClientResponse(ClientDto.builder()
-                            .id(client.getId())
-                            .name(client.getName())
-                            .email(client.getEmail())
-                            .phone(client.getPhone())
-                            .gender(client.getGender())
-                            .active(client.isActive())
-                            .tpGroup(client.getTpGroup())
-                            .brithday(client.getBrithday())
-                            .build());
-
-                    responses.add(response);
-                }
-            });
-            return responses;
-        } catch (Exception ex){
-        throw new HandlerError(ex.getMessage());
-    }
-    }
-    public List<ClientResponse> findAllByChar(char charClient){
-        List<Client> clients = clientRepository.findAll();
-        List<ClientResponse> responses = new ArrayList<>();
-        try {
             clients.stream()
-                    .filter(client -> client.getName().charAt(0) == charClient)
+                    .filter(client -> client.getActive().equals(filter.getDisabledClint()) ||
+                            client.getId().equals(filter.getIdClient()) ||
+                            (filter.getNameClient() != null && client.getName().toLowerCase().contains(filter.getNameClient().toLowerCase())))
                     .forEach(client -> {
                     ClientResponse response = new ClientResponse(ClientDto.builder()
                             .id(client.getId())
-                            .name(client.getName())
-                            .email(client.getEmail())
                             .phone(client.getPhone())
+                            .email(client.getEmail())
+                            .name(client.getName())
                             .gender(client.getGender())
-                            .active(client.isActive())
-                            .tpGroup(client.getTpGroup())
                             .brithday(client.getBrithday())
+                            .tpGroup(client.getTpGroup())
+                            .active(client.getActive())
+                            .cpf(client.getCpf())
                             .build());
 
                     responses.add(response);
             });
             return responses;
-        } catch (Exception ex){
-            throw new HandlerError(ex.getMessage());
-        }
     }
     public ClientResponse updateClient(ClientDto request, Long idClient, Long idAddress, Long idTrainer) {
         try {
@@ -130,7 +100,7 @@ public class ClientServiceImp{
         Client client = clientRepository.findById(idClient)
                 .orElseThrow(() -> new HandlerEntityNotFoundException("Client not found with id:" + idClient));
         try {
-            if (client.isActive()){
+            if (client.getActive()){
                 client.setActive(false);
                 clientRepository.save(client);
                return new ClientResponse("Client successfully deactivated");

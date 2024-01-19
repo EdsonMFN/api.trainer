@@ -19,7 +19,7 @@ import java.util.List;
 public class ClientDto extends RegistrationDataDto{
 
     private Long id;
-    private boolean active = true;
+    private Boolean active = true;
     private TpGroup tpGroup;
     private LocalDate brithday;
     private AddressDto address;
@@ -29,17 +29,16 @@ public class ClientDto extends RegistrationDataDto{
 //    public ClientDto(Client client){
 //        builder(client);
 //    }
-//
 //    public ClientDto builder(Client client){
 //        return ClientDto.builder()
 //                .id(client.getId())
+//                .active(client.getActive())
+//                .tpGroup(client.getTpGroup())
+//                .brithday(client.getBrithday())
 //                .name(client.getName())
 //                .email(client.getEmail())
 //                .phone(client.getPhone())
 //                .gender(client.getGender())
-//                .active(client.isActive())
-//                .tpGroup(client.getTpGroup())
-//                .brithday(client.getBrithday())
 //                .build();
 //    }
 }

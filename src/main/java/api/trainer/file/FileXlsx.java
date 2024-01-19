@@ -38,10 +38,7 @@ public class FileXlsx implements FileCreationStrategy{
                 addCell(line, 2, String.valueOf((trainingExercise.getRepetitions())));
                 addCell(line, 3, (trainingExercise.getTimeInterval() + "s"));
                 addCell(line, 4, (trainingExercise.getObservation()));
-
             }
-
-
             addCell(line, 5, String.valueOf((training.getTrainingIntensity())));
             addCell(line, 6, (training.getFeedback()));
             workbook.write(fileOutput);

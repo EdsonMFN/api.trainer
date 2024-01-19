@@ -28,6 +28,7 @@ public class TrainingServiceImp {
     @Autowired
     private FileXlsx fileXlsx;
 
+
     public TrainingResponse createExercise(TrainingDto request, Long idClient,Long idWorkoutRoutine){
         Client client = clientRepository.findById(idClient)
                 .orElseThrow(()->new HandlerEntityNotFoundException("Client not found with id:" + idClient));
@@ -67,41 +68,31 @@ public class TrainingServiceImp {
         return null;
     }
 
-    public TrainingResponse createPDF(Long idTraining){
+    public TrainingResponse exportFile(TrainingDto request,Long idTraining) {
         Training training = trainingRepository.findById(idTraining)
                 .orElseThrow(() -> new HandlerEntityNotFoundException("Training not found with id:" + idTraining));
         try {
-            filePDF.createFile("treino_academia.pdf", training);
+                request.getTypeFile().getDescription().createFile(request.getTypeFile().getTypeFile(),training);
+            return new TrainingResponse("Training file in format "+ String.valueOf(request.getTypeFile()) +", exported successfully");
         } catch (Exception e) {
             throw new HandlerError("Erro ao criar o PDF: Arquivo não encontrado");
         }
-        return new TrainingResponse("create file format PDF successfull");
     }
-    public TrainingResponse createXlsx(Long idTraining){
-        Training training = trainingRepository.findById(idTraining)
-                .orElseThrow(() -> new HandlerEntityNotFoundException("Training not found with id:" + idTraining));
-        try {
-            fileXlsx.createFile("treino_academia.xlsx", training);
-        } catch (Exception e) {
-            throw new HandlerError("Erro ao criar o Xlsx: Arquivo não encontrado");
-        }
-        return new TrainingResponse("create file format PDF successfull");
-    }
-    private boolean copyTraining (TrainingDto request){
-        try {
-            if (request.isCopy()){
-                Training training = trainingRepository.findById(request.getId())
-                        .orElseThrow(() -> new HandlerEntityNotFoundException("Training not found with id:" + request.getId()));
+        private boolean copyTraining (TrainingDto request){
+            try {
+                if (request.isCopy()) {
+                    Training training = trainingRepository.findById(request.getId())
+                            .orElseThrow(() -> new HandlerEntityNotFoundException("Training not found with id:" + request.getId()));
 
-                training.setTrainingIntensity(training.getTrainingIntensity());
-                training.setFeedback(training.getFeedback());
-                training.setTrainingExercises(training.getTrainingExercises());
-                trainingRepository.save(training);
-                new TrainingResponse("Copy with successfully");
+                    training.setTrainingIntensity(training.getTrainingIntensity());
+                    training.setFeedback(training.getFeedback());
+                    training.setTrainingExercises(training.getTrainingExercises());
+                    trainingRepository.save(training);
+                    new TrainingResponse("Copy with successfully");
+                }
+                return request.isCopy();
+            } catch (Exception ex) {
+                throw new HandlerError(ex.getMessage());
             }
-        return request.isCopy();
-        }catch (Exception ex){
-            throw new HandlerError(ex.getMessage());
         }
-    }
 }

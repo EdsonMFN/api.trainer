@@ -1,6 +1,7 @@
 package api.trainer.rest.controller;
 
 import api.trainer.domains.model.ClientDto;
+import api.trainer.rest.request.TypesToSearch;
 import api.trainer.rest.response.ClientResponse;
 import api.trainer.service.imp.ClientServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,25 +22,15 @@ public class ClientController {
         ClientResponse response = service.createClient(request,idTrainer);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-//    @GetMapping
-//    public ResponseEntity<List<ClientResponse>> findAllClient(){
-//        List<ClientResponse> responses = service.findAllClient();
-//        return ResponseEntity.status(HttpStatus.OK).body(responses);
-//    }
-    @GetMapping("/active/{activeOrDeactivate}")
-    public ResponseEntity<List<ClientResponse>> findAllByNameClient(@PathVariable boolean activeOrDeactivate){
-        List<ClientResponse> responses = service.findAllByActive(activeOrDeactivate);
+    @GetMapping
+    public ResponseEntity<List<ClientResponse>> findAllClient(){
+        List<ClientResponse> responses = service.findAllClient();
         return ResponseEntity.status(HttpStatus.OK).body(responses);
     }
-    @GetMapping("/tpChar/{charClient}")
-    public ResponseEntity<List<ClientResponse>> findAllByNameClient(@PathVariable char charClient){
-        List<ClientResponse> responses = service.findAllByChar(charClient);
+    @GetMapping(value = "/filter")
+    public ResponseEntity<List<ClientResponse>> findByFilter(@RequestBody TypesToSearch filter){
+        List<ClientResponse> responses = service.findByFilter(filter);
         return ResponseEntity.status(HttpStatus.OK).body(responses);
-    }
-    @GetMapping("/{idClient}")
-    public ResponseEntity<ClientResponse> findByIdClient(@PathVariable Long idClient){
-        ClientResponse response = service.findByIdClient(idClient);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
     @PutMapping("/client{idClient}/address{idAddress}/trainer{idTrainer}")
     public ResponseEntity<ClientResponse> updateClient(@RequestBody ClientDto request,@PathVariable Long idClient, @PathVariable Long idAddress, @PathVariable Long idTrainer){

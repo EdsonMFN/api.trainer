@@ -20,8 +20,8 @@ public class WorkoutRoutineDto {
     private String observation;
     private LocalDate startDate;
     private LocalDate finalDate;
-    private boolean timeTraining;
-    private boolean periodization;
+    private Boolean timeTraining;
+    private Boolean periodization;
     private Goal goal;
     private Difficulty difficulty;
     private TypeOfTraining group;

@@ -13,7 +13,7 @@ import java.io.IOException;
 
 @Component
 public class FilePDF implements FileCreationStrategy{
-    //todo:O aluno pode escolher o tipo de formatação do arquivo para fazer o download.O arquivo pode ser em PDF ou em XLX ou txt.O front do arq que o client escolheu;
+    //todo: O aluno pode escolher o tipo de formatação do arquivo para fazer o download.O arquivo pode ser em PDF ou em XLX ou txt.O front do arq que o client escolheu;
     //todo: Parte tecnica: Usar padrão de projeto, strategy;
 
     @Override
@@ -32,7 +32,6 @@ public class FilePDF implements FileCreationStrategy{
                 // Adiciona imagem (substitua 'path_para_imagem' pelo caminho real da imagem)
 //                    Image img = new Image(ImageDataFactory.create(exercise.getMedia()));
 //                    document.add(img);
-
                 document.add(new Paragraph("Series: " + trainingExercises.getSeries() + "x"));
                 document.add(new Paragraph("Repetitions: " + trainingExercises.getRepetitions()));
                 document.add(new Paragraph("TimeInterval: " + trainingExercises.getTimeInterval()+ "s"));

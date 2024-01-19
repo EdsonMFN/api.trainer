@@ -31,12 +31,10 @@ public class WorkoutRoutine {
     private LocalDate startDate;
     @Column(name = "final_date")
     private LocalDate finalDate;
-    @Column(name = "file_PDF")
-    private boolean filePDF;
     @Column(name = "time_raining")
-    private boolean timeTraining;
+    private Boolean timeTraining;
     @Column(name = "periodization")
-    private boolean periodization;
+    private Boolean periodization;
     @Column(name = "goal")
     @Enumerated(EnumType.STRING)
     private Goal goal;
@@ -54,8 +52,8 @@ public class WorkoutRoutine {
         this.observation = workoutRoutineDto.getObservation();
         this.startDate = workoutRoutineDto.getStartDate();
         this.finalDate = workoutRoutineDto.getFinalDate();
-        this.timeTraining = workoutRoutineDto.isTimeTraining();
-        this.periodization = workoutRoutineDto.isPeriodization();
+        this.timeTraining = workoutRoutineDto.getTimeTraining();
+        this.periodization = workoutRoutineDto.getPeriodization();
         this.goal = workoutRoutineDto.getGoal();
         this.difficulty = workoutRoutineDto.getDifficulty();
         this.group = workoutRoutineDto.getGroup();

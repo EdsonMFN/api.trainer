@@ -43,12 +43,12 @@ public enum State {
         this.description = description;
     }
 
-    public static State findById(Integer id){
-        return Stream.of(State.values())
-                .filter(value -> value.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(String.format("File %s not found", id)));
-    }
+        public static State findById(Integer id){
+            return Stream.of(State.values())
+                    .filter(value -> value.getId().equals(id))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException(String.format("File %s not found", id)));
+        }
     public static State findByDescription(String description){
         return Stream.of(State.values())
                 .filter(value -> value.getDescription().equals(description))

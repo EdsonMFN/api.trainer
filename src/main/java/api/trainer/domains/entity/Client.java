@@ -3,7 +3,10 @@ package api.trainer.domains.entity;
 import api.trainer.domains.model.ClientDto;
 import api.trainer.enums.TpGroup;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
@@ -23,7 +26,7 @@ public class Client extends RegistrationData {
     @Column(name = "id_client")
     private Long id;
     @Column(name = "status")
-    private boolean active;
+    private Boolean active;
     @Column(name = "tpGroup")
     @Enumerated(EnumType.STRING)
     private TpGroup tpGroup;
@@ -47,7 +50,7 @@ public class Client extends RegistrationData {
                 clientDto.getGender()
         );
         this.id = clientDto.getId();
-        this.active = clientDto.isActive();
+        this.active = clientDto.getActive();
         this.tpGroup = clientDto.getTpGroup();
         this.brithday = clientDto.getBrithday();
         if (clientDto.getAddress()!=null){
