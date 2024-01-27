@@ -39,7 +39,7 @@ public class FilePDF implements FileCreationStrategy{
             }
             // Adiciona dados do treino
             document.add(new Paragraph("\n"));
-            document.add(new Paragraph("Feedback: " + training.getFeedback()));
+//            document.add(new Paragraph("Feedback: " + training.getFeedbacks()));
             document.add(new Paragraph("Training Intensity: " + training.getTrainingIntensity()));
         } catch (IOException e) {
             throw new RuntimeException(e);

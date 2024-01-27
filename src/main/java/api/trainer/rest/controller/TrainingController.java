@@ -15,10 +15,19 @@ public class TrainingController {
     @Autowired
     private TrainingServiceImp service;
 
-    @PostMapping(value = "/client/{idClient}/workoutRoutine/{idWorkoutRoutine}")
-    public ResponseEntity<TrainingResponse> createdTraining(@RequestBody TrainingDto request,@PathVariable Long idClient,@PathVariable Long idWorkoutRoutine){
-        TrainingResponse response = service.createExercise(request,idClient,idWorkoutRoutine);
+    @PostMapping(value = "/client/{idClient}/workoutRoutine/{idWorkoutRoutine}/trainer/{idTrainer}")
+    public ResponseEntity<TrainingResponse> createdTraining(@RequestBody TrainingDto request,@PathVariable Long idClient,@PathVariable Long idWorkoutRoutine,@PathVariable Long idTrainer){
+        TrainingResponse response = service.createExercise(request,idClient,idWorkoutRoutine,idTrainer);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-
+    @PutMapping(value = "/{idTraining}")
+    public  ResponseEntity<TrainingResponse> updateTraining(@RequestBody TrainingDto request,@PathVariable Long idTraining){
+        TrainingResponse response = service.updateStartTraining(request,idTraining);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+    @PutMapping(value = "/{idTraining}/client/{idClient}")
+    public  ResponseEntity<TrainingResponse> updateTraining(@RequestBody TrainingDto request,@PathVariable Long idTraining,@PathVariable Long idClient){
+        TrainingResponse response = service.trainerUpdateTraining(request,idTraining,idClient);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 }

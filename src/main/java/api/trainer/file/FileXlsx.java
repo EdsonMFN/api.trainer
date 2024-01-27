@@ -40,7 +40,7 @@ public class FileXlsx implements FileCreationStrategy{
                 addCell(line, 4, (trainingExercise.getObservation()));
             }
             addCell(line, 5, String.valueOf((training.getTrainingIntensity())));
-            addCell(line, 6, (training.getFeedback()));
+//            addCell(line, 6, (training.getFeedbacks()));
             workbook.write(fileOutput);
 
         } catch (IOException ex) {

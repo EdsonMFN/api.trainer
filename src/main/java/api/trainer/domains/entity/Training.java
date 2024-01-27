@@ -18,17 +18,17 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Training {
+    //todo:Criar tabela(trainingClient) com feedback e starttraining(dateTime) e endTraining e intensitytrainingClient;
+    //todo: 1 training para N trainingClient;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_training")
     private Long id;
-    @Column(name = "feedback")
-    private String feedback;
     @Column(name = "training_intensity")
     @Enumerated(EnumType.STRING)
     private TrainingIntensity trainingIntensity;
     @Column(name = "copy")
-    private boolean copy;
+    private Boolean copy;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_client")
     private Client client;
@@ -37,15 +37,20 @@ public class Training {
     private WorkoutRoutine workoutRoutine;
     @OneToMany(mappedBy = "training")
     private List<TrainingExercises> trainingExercises;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_trainer")
+    private Trainer trainer;
+    @OneToMany(mappedBy = "training")
+    private List<ClientTraining> clientTrainings;
 
     public Training(TrainingDto trainingDto) {
         this.id = trainingDto.getId();
-        this.feedback = trainingDto.getFeedback();
         this.trainingIntensity = trainingDto.getTrainingIntensity();
-        this.copy = trainingDto.isCopy();
+        this.copy = trainingDto.getCopy();
         this.client = new Client();
         this.workoutRoutine = new WorkoutRoutine();
         this.trainingExercises = new ArrayList<>();
+        this.trainer = new Trainer();
+        this.clientTrainings = new ArrayList<>();
     }
 }
-//todo : colocar o treinador na classe;

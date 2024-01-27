@@ -31,8 +31,6 @@ public class WorkoutRoutine {
     private LocalDate startDate;
     @Column(name = "final_date")
     private LocalDate finalDate;
-    @Column(name = "time_raining")
-    private Boolean timeTraining;
     @Column(name = "periodization")
     private Boolean periodization;
     @Column(name = "goal")
@@ -52,7 +50,6 @@ public class WorkoutRoutine {
         this.observation = workoutRoutineDto.getObservation();
         this.startDate = workoutRoutineDto.getStartDate();
         this.finalDate = workoutRoutineDto.getFinalDate();
-        this.timeTraining = workoutRoutineDto.getTimeTraining();
         this.periodization = workoutRoutineDto.getPeriodization();
         this.goal = workoutRoutineDto.getGoal();
         this.difficulty = workoutRoutineDto.getDifficulty();
