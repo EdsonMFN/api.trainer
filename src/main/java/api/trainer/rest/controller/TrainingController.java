@@ -22,7 +22,7 @@ public class TrainingController {
     }
     @PutMapping(value = "/{idTraining}")
     public  ResponseEntity<TrainingResponse> updateTraining(@RequestBody TrainingDto request,@PathVariable Long idTraining){
-        TrainingResponse response = service.updateStartTraining(request,idTraining);
+        TrainingResponse response = service.updateStartTrainingAndWeight(request,idTraining);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
     @PutMapping(value = "/{idTraining}/client/{idClient}")

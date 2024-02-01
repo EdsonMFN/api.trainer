@@ -2,7 +2,7 @@ package api.trainer.file;
 
 import api.trainer.domains.entity.Exercise;
 import api.trainer.domains.entity.Training;
-import api.trainer.domains.entity.TrainingExercises;
+import api.trainer.domains.entity.TrainingExercise;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -29,7 +29,7 @@ public class FileXlsx implements FileCreationStrategy{
 
 
             var line = spreadsheet.createRow(accountant);
-            for (TrainingExercises trainingExercise : training.getTrainingExercises()) {
+            for (TrainingExercise trainingExercise : training.getTrainingExercises()) {
                 line = spreadsheet.createRow(accountant++);
                 Exercise exercise = trainingExercise.getExercise();
                 addCell(line, 0, (exercise.getNome()));

@@ -29,7 +29,7 @@ public class Exercise {
     @Enumerated(EnumType.STRING)
     private MuscleGroup muscleGroup;
     @OneToMany(mappedBy = "exercise")
-    private List<TrainingExercises> trainingExercises;
+    private List<TrainingExercise> trainingExercises;
 
     public Exercise(ExerciseDto exerciseDto) {
         this.id = exerciseDto.getId();

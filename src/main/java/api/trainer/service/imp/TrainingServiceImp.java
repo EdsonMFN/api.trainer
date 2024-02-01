@@ -3,6 +3,7 @@ package api.trainer.service.imp;
 import api.trainer.domains.entity.*;
 import api.trainer.domains.model.ClientTrainingDto;
 import api.trainer.domains.model.TrainingDto;
+import api.trainer.domains.model.TrainingExercisesDto;
 import api.trainer.domains.repository.*;
 import api.trainer.exception.handles.HandlerEntityNotFoundException;
 import api.trainer.exception.handles.HandlerError;
@@ -59,11 +60,11 @@ public class TrainingServiceImp {
                     Exercise exercise = exerciseRepository.findById(trainingExercisesDto.getExercise().getId())
                             .orElseThrow(()->new HandlerEntityNotFoundException("Exercise not found with id:" + trainingExercisesDto.getExercise().getId()));
 
-                    TrainingExercises trainingExercises = new TrainingExercises(trainingExercisesDto);
-                    trainingExercises.setTraining(finalTraining);
-                    trainingExercises.setExercise(exercise);
+                    TrainingExercise trainingExercise = new TrainingExercise(trainingExercisesDto);
+                    trainingExercise.setTraining(finalTraining);
+                    trainingExercise.setExercise(exercise);
 
-            trainingExerciseRepository.save(trainingExercises);
+            trainingExerciseRepository.save(trainingExercise);
         });
         return new TrainingResponse("Created training successfully");
     }
@@ -74,17 +75,14 @@ public class TrainingServiceImp {
         return null;
     }
 
-    public TrainingResponse updateStartTraining(TrainingDto request,Long idTraining){
-        //todo:Criar endpoint inicioDeTreino/feeedback: dateTime do inicio e fim de treino e feedback e intensidade do cliente;
-        //todo:1- Buscar clientTraining do dia(finfByStartDate);
-        //todo:2- Se existir atualizar clientTraining endTraing, feedback e intensidade;
-        //todo:3- Se não existir criar startTraining;
-        //todo:4-Add na lista de training e atualizar training;
+    public TrainingResponse updateStartTrainingAndWeight(TrainingDto request,Long idTraining){
 
         Training training = trainingRepository.findById(idTraining)
                 .orElseThrow(() -> new HandlerEntityNotFoundException("Training not found with id:" + idTraining));
         ClientTraining clientTraining = clientTrainingRepository.findByStartTraining(LocalDateTime.now());
+
         List<ClientTraining> clientTrainings = training.getClientTrainings();
+
         var requestClientTraining = request.getClientTraining();
 
         if (clientTraining != null){
@@ -100,25 +98,29 @@ public class TrainingServiceImp {
             training.getClientTrainings().add(clientTrainingStart);
             clientTraining = clientTrainingStart;
         }
+
         clientTraining.setTraining(training);
         clientTraining.setFeedback(requestClientTraining.getFeedback());
         clientTraining.setEndTraining(requestClientTraining.getEndTraining());
         clientTraining.setTrainingIntensity(requestClientTraining.getTrainingIntensity());
-        training.setClientTrainings(clientTrainings);
-        trainingRepository.save(training);
         clientTrainingRepository.save(clientTraining);
+
+        training.setClientTrainings(clientTrainings);
+        training.setTrainingExercises(clientUpdateWeight(request,idTraining));
+        trainingRepository.save(training);
 
         ClientTrainingDto clientTrainingDto = ClientTrainingDto.builder()
                 .id(clientTraining.getId())
                 .trainingIntensity(clientTraining.getTrainingIntensity())
                 .duration(timeTraining(LocalDateTime.now(),clientTraining.getEndTraining()))
                 .build();
-//todo: Setar o Obj clientTrainingDto(entity+duration);
+
         return new TrainingResponse(TrainingDto.builder()
                 .id(training.getId())
                 .clientTraining(clientTrainingDto)
                 .build());
     }
+
     public TrainingResponse trainerUpdateTraining(TrainingDto request,Long idTraining,Long idClient){
         Training training = trainingRepository.findById(idTraining)
                 .orElseThrow(() -> new HandlerEntityNotFoundException("Training not found with id:" + idTraining));
@@ -133,11 +135,11 @@ public class TrainingServiceImp {
             Exercise exercise = exerciseRepository.findById(trainingExercisesDto.getExercise().getId())
                     .orElseThrow(()->new HandlerEntityNotFoundException("Exercise not found with id:" + trainingExercisesDto.getExercise().getId()));
 
-            TrainingExercises trainingExercises = new TrainingExercises(trainingExercisesDto);
-            trainingExercises.setTraining(training);
-            trainingExercises.setExercise(exercise);
+            TrainingExercise trainingExercise = new TrainingExercise(trainingExercisesDto);
+            trainingExercise.setTraining(training);
+            trainingExercise.setExercise(exercise);
 
-            trainingExerciseRepository.save(trainingExercises);
+            trainingExerciseRepository.save(trainingExercise);
         });
         return new TrainingResponse("Update training successfully");
     }
@@ -172,12 +174,55 @@ public class TrainingServiceImp {
         }
     }
     private String timeTraining(LocalDateTime startTraining, LocalDateTime endTraining){
-
+        String timeTotal = String.valueOf(endTraining);
         Duration duration = Duration.between(startTraining,endTraining);
 
         long hours = duration.toHours() %24;
         long minutes = duration.toMinutes() %60;
 
-        return hours+":"+minutes;
+        return timeTotal + " the duration of the training was, " + hours+":"+minutes ;
+    }
+    private List<TrainingExercise>clientUpdateWeight(TrainingDto request,Long idTraining){
+        Training training = trainingRepository.findById(idTraining)
+                .orElseThrow(() -> new HandlerEntityNotFoundException("Training not found with id:" + idTraining));
+
+        List<TrainingExercise>trainingExercises = training.getTrainingExercises();
+
+        request.getTrainingExercises()
+                .forEach(trainingExercisesDto -> {
+
+                    TrainingExercise trainingExercise = trainingExerciseRepository.findFirstByExerciseIdAndTrainingId
+                            (trainingExercisesDto.getExercise().getId(),
+                                    idTraining);
+
+                    if (trainingExercise.getWeight() != null){
+                        final TrainingExercise trainingExerciseNew = getTrainingExercise(trainingExercisesDto,trainingExercise);
+                        trainingExercise = trainingExerciseNew;
+
+                        trainingExercises.add(trainingExerciseNew);
+                    }
+                    else {
+                        trainingExercise.setWeight(trainingExercisesDto.getWeight());
+
+                        trainingExercises.add(trainingExercise);
+                    }
+
+                    trainingExercise.setExercise(trainingExercise.getExercise());
+                    trainingExercise.setTraining(trainingExercise.getTraining());
+                    trainingExerciseRepository.save(trainingExercise);
+
+                });
+        return trainingExercises;
+    }
+    private static TrainingExercise getTrainingExercise(TrainingExercisesDto trainingExercisesDto, TrainingExercise trainingExercise) {
+        TrainingExercise trainingExerciseNew = new TrainingExercise();
+        trainingExerciseNew.setExercise(trainingExercise.getExercise());
+        trainingExerciseNew.setTraining(trainingExercise.getTraining());
+        trainingExerciseNew.setTimeInterval(trainingExercise.getTimeInterval());
+        trainingExerciseNew.setObservation(trainingExercise.getObservation());
+        trainingExerciseNew.setRepetitions(trainingExercise.getRepetitions());
+        trainingExerciseNew.setSeries(trainingExercise.getSeries());
+        trainingExerciseNew.setWeight(trainingExercisesDto.getWeight());
+        return trainingExerciseNew;
     }
 }

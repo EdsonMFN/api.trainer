@@ -16,6 +16,7 @@ public class TrainingExercisesDto {
     private String observation;
     private Integer series;
     private Integer repetitions;
+    private Integer weight;
     private Integer timeInterval;
     private TrainingDto training;
     private ExerciseDto exercise;

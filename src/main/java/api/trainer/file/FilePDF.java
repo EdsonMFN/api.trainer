@@ -2,7 +2,7 @@ package api.trainer.file;
 
 import api.trainer.domains.entity.Exercise;
 import api.trainer.domains.entity.Training;
-import api.trainer.domains.entity.TrainingExercises;
+import api.trainer.domains.entity.TrainingExercise;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
@@ -24,18 +24,18 @@ public class FilePDF implements FileCreationStrategy{
             // Adiciona título
             document.add(new Paragraph("Gym Training Report"));
 
-            for (TrainingExercises trainingExercises : training.getTrainingExercises()) {
+            for (TrainingExercise trainingExercise : training.getTrainingExercises()) {
                 // Adiciona espaçamento entre exercícios
-                Exercise exercise = trainingExercises.getExercise();
+                Exercise exercise = trainingExercise.getExercise();
                 document.add(new Paragraph("\n"));
                 document.add(new Paragraph("Name: " + exercise.getNome()));
                 // Adiciona imagem (substitua 'path_para_imagem' pelo caminho real da imagem)
 //                    Image img = new Image(ImageDataFactory.create(exercise.getMedia()));
 //                    document.add(img);
-                document.add(new Paragraph("Series: " + trainingExercises.getSeries() + "x"));
-                document.add(new Paragraph("Repetitions: " + trainingExercises.getRepetitions()));
-                document.add(new Paragraph("TimeInterval: " + trainingExercises.getTimeInterval()+ "s"));
-                document.add(new Paragraph("Observation: " + trainingExercises.getObservation()));
+                document.add(new Paragraph("Series: " + trainingExercise.getSeries() + "x"));
+                document.add(new Paragraph("Repetitions: " + trainingExercise.getRepetitions()));
+                document.add(new Paragraph("TimeInterval: " + trainingExercise.getTimeInterval()+ "s"));
+                document.add(new Paragraph("Observation: " + trainingExercise.getObservation()));
             }
             // Adiciona dados do treino
             document.add(new Paragraph("\n"));
